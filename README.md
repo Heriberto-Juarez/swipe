@@ -7,6 +7,12 @@ Using git:
 ````
 git clone https://github.com/Heriberto-Juarez/swipe.git
 ````
+Using npm
+
+````
+npm i herii-swipe
+````
+
 
 ## How to use
 Swipe is a class, so in order to use it we must create an instance of it:
