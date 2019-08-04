@@ -1,6 +1,6 @@
 {
   "name": "herii-swipe",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JavaScript to detect touch swipe left,right, up or down on any touchscreen device.",
   "main": "swipe.js",
   "scripts": {
