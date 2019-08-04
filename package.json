@@ -1,0 +1,29 @@
+{
+  "name": "swipe",
+  "version": "0.0.0",
+  "description": "JavaScript to detect touch swipe left,right, up or down on any touchscreen device.",
+  "main": "swipe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heriberto-Juarez/swipe.git"
+  },
+  "keywords": [
+    "vanilla",
+    "javascript",
+    "swipe",
+    "mobile",
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "author": "Herii",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Heriberto-Juarez/swipe/issues"
+  },
+  "homepage": "https://github.com/Heriberto-Juarez/swipe#readme"
+}

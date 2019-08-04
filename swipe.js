@@ -1,66 +1,62 @@
+class Swipe {
+	constructor(settings) {
+		this.onLeftSwipe = () => {
+		};
+		this.onRightSwipe = () => {
+		};
+		this.onUpSwipe = () => {
+		};
+		this.onDownSwipe = () => {
+		};
+		this.xDown = null;
+		this.yDown = null;
+		this.target = document;
 
-
-    var startX,
-        startY,
-        dist,
-        threshold = 150, //required min distance traveled to be considered swipe
-        allowedTime = 200, // maximum time allowed to travel that distance
-        elapsedTime,
-        startTime;
-		
-
-
-
-    window.addEventListener('touchstart', function(e){
-        //touchsurface.innerHTML = ''
-        var touchobj = e.changedTouches[0]
-        dist = 0
-        startX = touchobj.pageX
-        startY = touchobj.pageY
-        startTime = new Date().getTime() // record time when finger first makes contact with surface
-        e.preventDefault()
-		
-		event.target.addEventListener('touchmove', function(e){
-			e.preventDefault() // prevent scrolling when inside DIV
-		}, false)
-	 
-		event.target.addEventListener('touchend', function(e){
-			var touchobj = e.changedTouches[0]
-			dist = touchobj.pageX - startX // get total dist traveled by finger while in contact with surface
-			elapsedTime = new Date().getTime() - startTime // get time elapsed
-			// check that elapsed time is within specified, horizontal dist traveled >= threshold, and vertical dist traveled <= 100
-			var swiperightBol = (elapsedTime <= allowedTime && Math.abs(dist) >= threshold && Math.abs(touchobj.pageY - startY) <= 100)
-			
-			var dir_str = "none";
-			var dir_int = 0;
-			if(swiperightBol){
-				if(dist > 0){
-					dir_str = "right";
-					dir_int = 1;
-				}else{
-					dir_str = "left";
-					dir_int = 2;
-				}
-				var _e = new CustomEvent("swap", {
-					target : event.target,
-					detail: {		
-						direction : dir_str,
-						direction_int : dir_int
-					},
-					bubbles: true,
-					cancelable: true
-				});
-				trigger(event.target,"Swap",_e);			
-			}
-			
-			//handleswipe(swiperightBol, event.target);
-			e.preventDefault()
-		}, false)
-
-		function trigger(elem, name, event) {
-		
-			elem.dispatchEvent(event);
-			eval(elem.getAttribute('on' + name));
+		for (let i in settings) {
+			if (settings.hasOwnProperty(i)) this[i] = settings[i];
 		}
-		
-    }, false)
+
+		this.target.addEventListener("touchstart", (e) => {this.handleTouchStart(e);}, false);
+		this.target.addEventListener("touchmove", (e) => {this.handleTouchMove(e);}, false);
+	}
+
+	handleTouchStart(evt) {
+		this.xDown = evt.touches[0].clientX;
+		this.yDown = evt.touches[0].clientY;
+	}
+
+	handleTouchMove(evt) {
+		if (!this.xDown || !this.yDown) {
+			return;
+		}
+		let xUp = evt.touches[0].clientX;
+		let yUp = evt.touches[0].clientY;
+		let xDiff = this.xDown - xUp;
+		let yDiff = this.yDown - yUp;
+
+		if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+			if (xDiff > 0) this.onLeftSwipe();
+			else this.onRightSwipe();
+		} else {
+			if (yDiff > 0) this.onUpSwipe();
+			else this.onDownSwipe();
+		}
+		this.xDown = null;
+		this.yDown = null;
+	}
+
+	onSwipe(type, fn) {
+		type = type || 'left';
+		if (type === 'left') {
+			this.onLeftSwipe = fn;
+		} else if (type === 'right') {
+			this.onRightSwipe = fn;
+		} else if (type === 'up') {
+			this.onUpSwipe = fn;
+		} else if (type === 'down') {
+			this.onDownSwipe = fn;
+		} else {
+			throw new Error("Swipe type not recognized");
+		}
+	}
+}
